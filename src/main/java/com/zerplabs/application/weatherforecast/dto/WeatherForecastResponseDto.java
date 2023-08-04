@@ -1,12 +1,9 @@
 package com.zerplabs.application.weatherforecast.dto;
 
-import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.google.gson.annotations.SerializedName;
 
-import jakarta.persistence.Column;
 
 public class WeatherForecastResponseDto {
 	@JsonProperty(value="city_name")

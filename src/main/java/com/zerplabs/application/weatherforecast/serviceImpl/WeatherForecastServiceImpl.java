@@ -1,8 +1,6 @@
 package com.zerplabs.application.weatherforecast.serviceImpl;
 
 import java.util.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +14,7 @@ import com.zerplabs.application.weatherforecast.dto.WeatherForecastResponseDataD
 import com.zerplabs.application.weatherforecast.dto.WeatherForecastResponseDto;
 import com.zerplabs.application.weatherforecast.exceptions.InvalidCityException;
 import com.zerplabs.application.weatherforecast.exceptions.WeatherAPIConnectionError;
-import com.zerplabs.application.weatherforecast.model.CurrentWeatherDetail;
 import com.zerplabs.application.weatherforecast.model.LocationDetail;
-import com.zerplabs.application.weatherforecast.repository.LocationDetailRepository;
 import com.zerplabs.application.weatherforecast.repository.WeatherForecastDetailRepository;
 import com.zerplabs.application.weatherforecast.service.WeatherForecastService;
 import com.zerplabs.application.weatherforecast.model.WeatherForecastDetail;
@@ -28,9 +24,6 @@ public class WeatherForecastServiceImpl implements WeatherForecastService{
 	
 	@Autowired
 	private WebClient.Builder webClientBuilder;
-	
-	@Autowired
-	private LocationDetailRepository locationRepo;
 	
 	@Autowired
 	private UtilityService utilService;
@@ -48,7 +41,7 @@ public class WeatherForecastServiceImpl implements WeatherForecastService{
 		{
 			System.out.println("City is present in Location table");
 			LocationDetail location = locationDetail.get();
-			List<WeatherForecastDetail> weatherForecastList = location.getWeatherForecastDetail(); // checkIfLocationExistsInWeatherForecast(location.getId());
+			List<WeatherForecastDetail> weatherForecastList = location.getWeatherForecastDetail();
 			// checks if location contains weather forecast detail 
 			if (weatherForecastList.size() == 0) {
 				System.out.println("Forecast Data not present");

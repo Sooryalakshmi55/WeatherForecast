@@ -2,7 +2,7 @@ package com.zerplabs.application.weatherforecast.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CurrentWeatherResponseDataDto {
+public class CurrentWeatherDataDto {
 	@JsonProperty(value="city_name")
 	private String cityName;
 	private double lat;

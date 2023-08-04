@@ -11,30 +11,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.zerplabs.application.weatherforecast.constants.WeatherBitAPIConstants;
-import com.zerplabs.application.weatherforecast.dto.CurrentWeatherResponseDataDto;
-import com.zerplabs.application.weatherforecast.dto.CurrentWeatherResponseDto;
+import com.zerplabs.application.weatherforecast.dto.CurrentWeatherDataDto;
+import com.zerplabs.application.weatherforecast.dto.CurrentWeatherDto;
 import com.zerplabs.application.weatherforecast.exceptions.InvalidCityException;
 import com.zerplabs.application.weatherforecast.exceptions.WeatherAPIConnectionError;
 import com.zerplabs.application.weatherforecast.model.LocationDetail;
 import com.zerplabs.application.weatherforecast.repository.CurrentWeatherDetailRepository;
-import com.zerplabs.application.weatherforecast.repository.LocationDetailRepository;
 import com.zerplabs.application.weatherforecast.service.CurrentWeatherService;
 import com.zerplabs.application.weatherforecast.model.CurrentWeatherDetail;
 
 
-//import com.google.gson.Gson;
-
 @Service
 public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 	
-//	@Autowired
-//	private RestTemplate template;
-	
 	@Autowired
 	private WebClient.Builder webClientBuilder;
-	
-	@Autowired
-	private LocationDetailRepository locationRepo;
 	
 	@Autowired
 	private CurrentWeatherDetailRepository currentWeatherRepo;
@@ -67,7 +58,7 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 				else
 				{
 					CurrentWeatherDetail currentWeatherToUpdate = currentWeather.get();
-					CurrentWeatherResponseDataDto responseData = getCurrentWeatherFromWeatherBit(city);
+					CurrentWeatherDataDto responseData = getCurrentWeatherFromWeatherBit(city);
 					
 					java.sql.Date dateObj = new java.sql.Date(responseData.getObservationDateTime() * 1000);
 					currentWeatherToUpdate.setDate(dateObj);
@@ -94,7 +85,7 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 			// Get current weather detail by calling WeatherBit api if not exists in database
 			else
 			{
-				CurrentWeatherResponseDataDto responseData = getCurrentWeatherFromWeatherBit(city);
+				CurrentWeatherDataDto responseData = getCurrentWeatherFromWeatherBit(city);
 				CurrentWeatherDetail currentWeatherResponse = saveCurrentWeatherDetail(location, responseData);
 				return currentWeatherResponse;
 				
@@ -115,7 +106,7 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 	private CurrentWeatherDetail getCurrentWeather(String city)
 	{
 		
-		CurrentWeatherResponseDataDto responseData = getCurrentWeatherFromWeatherBit(city);
+		CurrentWeatherDataDto responseData = getCurrentWeatherFromWeatherBit(city);
 		
 		LocationDetail locationData = utilService.saveLocation(responseData.getLat(),responseData.getLon(),responseData.getCityName());
 		
@@ -124,17 +115,17 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 		return currentWeatherResponse;
 	}
 	
-	private  CurrentWeatherResponseDataDto getCurrentWeatherFromWeatherBit(String city)
+	private  CurrentWeatherDataDto getCurrentWeatherFromWeatherBit(String city)
 	{
 		final String url = WeatherBitAPIConstants.BASE_URL + "/current?city=" + city + "&key=" + WeatherBitAPIConstants.API_KEY;
 		
-		ResponseEntity<CurrentWeatherResponseDto> weatherAPIResponse;
+		ResponseEntity<CurrentWeatherDto> weatherAPIResponse;
 		try {
 			weatherAPIResponse = webClientBuilder.build()
 					 .get()
 					 .uri(url)
 					 .retrieve()
-					 .toEntity(CurrentWeatherResponseDto.class)
+					 .toEntity(CurrentWeatherDto.class)
 					 .block();
 		}
 		catch (Exception e) {
@@ -150,13 +141,13 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 			throw new InvalidCityException("City is invalid");
 		}
 
-		CurrentWeatherResponseDto weatherResponse = weatherAPIResponse.getBody();
-		CurrentWeatherResponseDataDto responseData = weatherResponse.getData().get(0);
+		CurrentWeatherDto weatherResponse = weatherAPIResponse.getBody();
+		CurrentWeatherDataDto responseData = weatherResponse.getData().get(0);
 		return responseData;
 	}
 	
 	
-	private CurrentWeatherDetail saveCurrentWeatherDetail(LocationDetail locationData, CurrentWeatherResponseDataDto responseData)
+	private CurrentWeatherDetail saveCurrentWeatherDetail(LocationDetail locationData, CurrentWeatherDataDto responseData)
 	{
 		CurrentWeatherDetail currentWeatherDetail = new CurrentWeatherDetail();
 		
@@ -178,7 +169,6 @@ public class CurrentWeatherServiceImpl implements CurrentWeatherService{
 		currentWeatherDetail.setDescription(responseData.getWeather().getDescription());
 		
 		CurrentWeatherDetail currentWeatherDetailResponse = currentWeatherRepo.save(currentWeatherDetail);
-		
 		return currentWeatherDetailResponse;
 		
 	}

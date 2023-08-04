@@ -1,6 +1,9 @@
 package com.zerplabs.application.weatherforecast.model;
 
 import java.sql.Time;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Date;
 
 import jakarta.persistence.Column;
@@ -22,6 +25,7 @@ public class CurrentWeatherDetail {
 	
 	@OneToOne
     @JoinColumn(name = "location_id")
+	@JsonIgnore
 	private LocationDetail location;
 	
 	@Column(name="date")
@@ -56,14 +60,6 @@ public class CurrentWeatherDetail {
 	
 	@Column(name="description")
 	private String description;
-
-//	public int getId() {
-//		return id;
-//	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
 
 	public LocationDetail getLocation() {
 		return location;

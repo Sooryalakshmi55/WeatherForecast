@@ -1,11 +1,6 @@
 package com.zerplabs.application.weatherforecast.model;
 
-import java.sql.Date;
 import java.util.List;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -35,12 +30,6 @@ public class LocationDetail {
 	
 	@Column(name="city")
 	private String city;
-	
-//	@Column(name="created_date")
-//	private Date createdDate;
-//	
-//	@Column(name="last_modified_date")
-//	private Date lastModifiedDate;
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "location", fetch = FetchType.LAZY)
@@ -89,24 +78,4 @@ public class LocationDetail {
 	public void setCity(String city) {
 		this.city = city;
 	}
-
-//	public Date getCreatedDate() {
-//		return createdDate;
-//	}
-//
-//	public void setCreatedDate(Date createdDate) {
-//		this.createdDate = createdDate;
-//	}
-//
-//	public Date getLastModifiedDate() {
-//		return lastModifiedDate;
-//	}
-//
-//	public void setLastModifiedDate(Date lastModifiedDate) {
-//		this.lastModifiedDate = lastModifiedDate;
-//	}
-	
-	
-	
-
 }

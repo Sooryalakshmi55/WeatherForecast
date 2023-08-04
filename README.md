@@ -17,7 +17,76 @@ Used an external third party service named `Weatherbit` to fetch weather data.
 
 There are 2 APIs developed.
 - GET : /api/weather/current : To get current weather details
+### API : http://localhost:8080/api/weather/current?city=Coimbatore
+### Sample Response
+```
+{
+    "status": "success",
+    "message": "Current Weather Details",
+    "data": {
+        "date": "2023-08-04",
+        "temperature": 25.0,
+        "clouds": 0,
+        "airQualityIndex": 37,
+        "windSpeed": 4.1,
+        "windDirection": "SSW",
+        "relativeHumidity": 88,
+        "uvIndex": 0,
+        "sunrise": "00:40:00",
+        "sunset": "13:15:00",
+        "description": "Clear sky"
+    }
+}
+```
 - GET : /api/weather/forecast : To get weather forecast details
+### API : http://localhost:8080/api/weather/forecast?city=Coimbatore
+### Sample Response
+```
+{
+    "status": "success",
+    "message": "Weather Forecast Details",
+    "data": {
+        "id": 2,
+        "latitude": 11.00555,
+        "longitude": 76.96612,
+        "city": "Coimbatore",
+        "weatherForecastDetail": [
+            {
+                "id": 1,
+                "date": "2023-08-05",
+                "mintemp": 21.4,
+                "maxtemp": 33.1,
+                "temperature": 26.3,
+                "clouds": 21,
+                "windSpeed": 5.4,
+                "windDirection": "SW",
+                "relativeHumidity": 66,
+                "sunrise": "2023-08-05",
+                "sunset": "2023-08-05",
+                "description": "Scattered clouds",
+                "probabilityOfPrecipitation": 0,
+                "precipitation": 0
+            },
+            {
+                "id": 2,
+                "date": "2023-08-06",
+                "mintemp": 21.9,
+                "maxtemp": 33.3,
+                "temperature": 26.5,
+                "clouds": 22,
+                "windSpeed": 5.8,
+                "windDirection": "SW",
+                "relativeHumidity": 67,
+                "sunrise": "2023-08-06",
+                "sunset": "2023-08-06",
+                "description": "Scattered clouds",
+                "probabilityOfPrecipitation": 20,
+                "precipitation": 0
+            }
+        ]
+    }
+}
+```
 
 City name should be passed as input to both the APIs.
 
